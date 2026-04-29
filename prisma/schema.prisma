@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                     String         @id @default(uuid())
+  email                  String         @unique
+  passwordHash           String?
+  tokenBalance           Int            @default(0)
+  stripeCustomerId       String?        @unique
+  stripeSubscriptionId   String?        @unique
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  subscriptions          Subscription[]
+  properties             Property[]
+  interactions           Interaction[]
+}
+
+model Subscription {
+  id                 String   @id @default(uuid())
+  userId             String
+  status             String
+  planId             String
+  currentPeriodEnd   DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Property {
+  id                    String        @id @default(uuid())
+  userId                String
+  address               String
+  zipCode               String
+  neighborhood          String?
+  acquisitionScore      Int?
+  estimatedRepairs      Float?
+  arv                   Float?
+  maxAllowableOffer     Float?
+  status                String        @default("lead")
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  user                  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interactions          Interaction[]
+}
+
+model Interaction {
+  id          String   @id @default(uuid())
+  userId      String
+  propertyId  String?
+  type        String   // "text", "voice", "analysis"
+  cost        Int      // Token cost
+  payload     String?  // Raw output/context
+  timestamp   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property    Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+}
