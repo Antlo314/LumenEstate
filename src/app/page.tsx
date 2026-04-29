@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import GeminiTerminal from "@/components/GeminiTerminal";
 
 export default function Home() {
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const containerRef = useRef(null);
   const zionNodeRef = useRef(null);
   const textRefs = useRef<(HTMLSpanElement | HTMLHeadingElement | HTMLParagraphElement | HTMLDivElement | null)[]>([]);
@@ -138,11 +140,16 @@ export default function Home() {
         </div>
 
         <div ref={(el) => { textRefs.current[8] = el; }} className="w-full flex justify-center mt-4">
-          <button className="px-14 py-5 bg-white hover:bg-[#00F0FF] text-black font-[family-name:var(--font-space-mono)] text-xs tracking-[0.3em] font-bold transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,240,255,0.4)] w-full md:w-auto">
+          <button 
+            onClick={() => setIsTerminalOpen(true)}
+            className="px-14 py-5 bg-white hover:bg-[#00F0FF] text-black font-[family-name:var(--font-space-mono)] text-xs tracking-[0.3em] font-bold transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,240,255,0.4)] w-full md:w-auto"
+          >
             INITIALIZE DEAL ENGINE
           </button>
         </div>
       </main>
+
+      {isTerminalOpen && <GeminiTerminal onClose={() => setIsTerminalOpen(false)} />}
     </div>
   );
 }
