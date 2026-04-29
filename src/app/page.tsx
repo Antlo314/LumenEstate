@@ -100,13 +100,46 @@ export default function Home() {
           </div>
         </div>
 
-        <div ref={(el) => { textRefs.current[7] = el; }} className="p-12 border border-zinc-800/30 bg-black/60 flex flex-col items-center justify-center relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#00F0FF]/5 translate-y-full group-hover:translate-y-0 transition-transform duration-700"></div>
-          <p className="text-zinc-400 font-light text-center max-w-xl mb-10 relative z-10 leading-relaxed text-sm tracking-wide">
-            Awaiting manual override. Initialize the Predictive Deal Engine to query property viablity scores and trigger omnichannel agents.
-          </p>
-          <button className="relative z-10 px-14 py-5 bg-zinc-100 hover:bg-[#00F0FF] text-black font-[family-name:var(--font-space-mono)] text-xs tracking-[0.3em] font-bold transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,240,255,0.4)]">
-            INITIALIZE ENGINE
+        <div className="flex flex-col mb-10 w-full" ref={(el) => { textRefs.current[7] = el; }}>
+          <h3 className="text-[#00F0FF] text-xs font-[family-name:var(--font-space-mono)] uppercase tracking-[0.3em] mb-6 border-b border-[#00F0FF]/20 pb-4">
+            Available Command Modules
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#00F0FF]/50 transition-colors group cursor-pointer">
+              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#00F0FF] transition-colors">1. Predictive Deal Engine</h4>
+              <p className="text-zinc-400 text-xs leading-relaxed">
+                Chat interface with Gemini to calculate proprietary Acquisition Viability Scores based on simulated distress signals (probate, tax delinquency).
+              </p>
+            </div>
+
+            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#00F0FF]/50 transition-colors group cursor-pointer">
+              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#00F0FF] transition-colors">2. Deep Financial Analysis</h4>
+              <p className="text-zinc-400 text-xs leading-relaxed">
+                Automatically calculate Estimated Repairs, After Repair Value (ARV), and Max Allowable Offers strictly adhering to the 70% rule.
+              </p>
+            </div>
+
+            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#4A00E0]/50 transition-colors group cursor-pointer">
+              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#4A00E0] transition-colors">3. Outbound Omnichannel Agent</h4>
+              <p className="text-zinc-400 text-xs leading-relaxed">
+                Dispatch AI-generated cold text scripts via Twilio, or deploy synthesized real-time voice calls via ElevenLabs to motivated sellers.
+              </p>
+            </div>
+
+            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#4A00E0]/50 transition-colors group cursor-pointer">
+              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#4A00E0] transition-colors">4. Inbound Negotiation Mode</h4>
+              <p className="text-zinc-400 text-xs leading-relaxed">
+                Catch inbound SMS replies via Twilio webhooks and let the Gemini engine autonomously negotiate and respond within the property's context.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <div ref={(el) => { textRefs.current[8] = el; }} className="w-full flex justify-center mt-4">
+          <button className="px-14 py-5 bg-white hover:bg-[#00F0FF] text-black font-[family-name:var(--font-space-mono)] text-xs tracking-[0.3em] font-bold transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,240,255,0.4)] w-full md:w-auto">
+            INITIALIZE DEAL ENGINE
           </button>
         </div>
       </main>
