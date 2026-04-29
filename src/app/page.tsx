@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import GeminiTerminal from "@/components/GeminiTerminal";
 
@@ -12,7 +11,7 @@ export default function Home() {
   const [activeTargetsCount, setActiveTargetsCount] = useState<number | string>("---");
   
   const containerRef = useRef(null);
-  const zionNodeRef = useRef(null);
+  const glowRef = useRef(null);
 
   useEffect(() => {
     // Fetch live targets count
@@ -23,22 +22,19 @@ export default function Home() {
       })
       .catch(console.error);
 
-    // Premium entry animation
-    const tl = gsap.timeline();
-    
-    // Abstract Radar HUD floating/spinning
-    tl.to(zionNodeRef.current, {
-      rotation: 360,
-      duration: 120,
+    // Premium elegant entry animation
+    gsap.fromTo(".gsap-stagger", 
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.5, stagger: 0.1, ease: "power2.out", delay: 0.2 }
+    );
+
+    // Slow, ambient background gradient movement
+    gsap.to(glowRef.current, {
+      backgroundPosition: "200% 50%",
+      duration: 20,
       repeat: -1,
       ease: "linear"
     });
-
-    // Staggered text entrance using className to avoid React hydration ref bugs
-    gsap.fromTo(".gsap-stagger", 
-      { y: 40, opacity: 0, filter: "blur(10px)" },
-      { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2 }
-    );
   }, []);
 
   const handleAcquireTarget = (e: React.FormEvent) => {
@@ -49,142 +45,132 @@ export default function Home() {
   };
 
   return (
-    <div ref={containerRef} className="flex flex-col flex-1 items-center justify-center font-[family-name:var(--font-outfit)] w-full min-h-screen relative overflow-y-auto pt-20 pb-10">
+    <div ref={containerRef} className="flex flex-col flex-1 items-center justify-start font-[family-name:var(--font-outfit)] w-full min-h-screen relative overflow-y-auto bg-[#0A0A0A]">
       
-      {/* Background Cybernetic Radar */}
-      <div className="fixed inset-0 z-0 flex items-center justify-center opacity-30 mix-blend-screen pointer-events-none">
-        <Image 
-          ref={zionNodeRef}
-          src="/diagnostic_nano_node.png" 
-          alt="Zion Node" 
-          width={1000} 
-          height={1000}
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505]"></div>
+      {/* Ambient Premium Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#1A1500] via-[#0A0A0A] to-[#050505] opacity-80"></div>
+        <div 
+          ref={glowRef}
+          className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.03)_0%,_transparent_50%)] bg-[length:100%_100%]"
+        ></div>
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[100px]"></div>
       </div>
 
-      <main className="relative z-10 flex flex-col w-full max-w-6xl p-8 lg:p-16 border border-[#00F0FF]/10 bg-[#050505]/80 backdrop-blur-3xl shadow-[0_0_50px_rgba(0,240,255,0.03)]">
+      <main className="relative z-10 flex flex-col w-full max-w-6xl p-8 lg:p-16 mt-10 mb-20 bg-white/[0.02] border border-white/[0.05] rounded-2xl backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
         
         {/* Top telemetry bar */}
-        <div className="gsap-stagger flex justify-between w-full border-b border-[#00F0FF]/20 pb-4 mb-12 font-[family-name:var(--font-space-mono)] text-[10px] sm:text-xs text-[#00F0FF]/70 tracking-widest uppercase">
-          <span>SYSTEM: ONLINE</span>
-          <span>NODE: ZION-DIAGNOSTIC</span>
-          <span className="animate-pulse">LATENCY: 12ms</span>
+        <div className="gsap-stagger flex justify-between w-full border-b border-white/[0.08] pb-6 mb-16 font-light text-[10px] sm:text-xs text-[#D4AF37]/60 tracking-[0.3em] uppercase">
+          <span>Lumen Wealth Desk</span>
+          <span>Institutional Access</span>
+          <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span> SECURE CONNECTION</span>
         </div>
 
-        <div className="flex flex-col gap-2 mb-12">
-          <h1 className="gsap-stagger text-5xl lg:text-7xl font-light tracking-tighter text-white uppercase">
-            BESPOKE <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#4A00E0]">OPERATING</span> SYSTEM
+        <div className="flex flex-col items-center text-center gap-4 mb-20">
+          <h1 className="gsap-stagger font-[family-name:var(--font-playfair)] text-5xl lg:text-7xl font-normal tracking-tight text-[#F5F5F5]">
+            Property Intelligence <span className="italic text-[#D4AF37]">Desk</span>
           </h1>
-          <p className="gsap-stagger text-[#4A00E0] text-lg sm:text-xl font-light tracking-[0.3em] uppercase mt-4">
-            [ Real Estate Autonomous Engine ]
+          <p className="gsap-stagger text-[#E5E4E2]/60 text-lg sm:text-xl font-light tracking-[0.1em] mt-4 max-w-2xl">
+            Autonomous valuation, underwriting, and off-market asset discovery powered by institutional-grade AI.
           </p>
         </div>
 
         {/* Target Acquisition Search Bar */}
-        <div className="gsap-stagger mb-16 w-full max-w-3xl">
-          <h3 className="text-[#00F0FF] text-xs font-[family-name:var(--font-space-mono)] uppercase tracking-[0.3em] mb-4">
-            Target Acquisition Mode
-          </h3>
-          <form onSubmit={handleAcquireTarget} className="flex w-full items-center">
+        <div className="gsap-stagger flex justify-center w-full mb-24">
+          <form onSubmit={handleAcquireTarget} className="flex w-full max-w-3xl items-center bg-black/40 border border-white/10 rounded-full p-2 shadow-[0_0_30px_rgba(212,175,55,0.05)] transition-all duration-500 hover:border-[#D4AF37]/40 hover:shadow-[0_0_40px_rgba(212,175,55,0.1)] focus-within:border-[#D4AF37]/60 focus-within:bg-black/60">
             <input 
               type="text" 
               value={targetAddress}
               onChange={(e) => setTargetAddress(e.target.value)}
-              placeholder="ENTER PROPERTY ADDRESS..." 
-              className="flex-1 bg-black/50 border border-[#00F0FF]/30 text-white font-[family-name:var(--font-space-mono)] text-sm px-6 py-5 focus:outline-none focus:border-[#00F0FF] transition-colors placeholder:text-zinc-700"
+              placeholder="Enter property address for immediate underwriting..." 
+              className="flex-1 bg-transparent text-[#F5F5F5] font-light text-base px-8 py-4 focus:outline-none placeholder:text-white/30"
             />
             <button 
               type="submit"
-              className="px-8 py-5 bg-[#00F0FF]/10 hover:bg-[#00F0FF] text-[#00F0FF] hover:text-black border-y border-r border-[#00F0FF]/30 font-[family-name:var(--font-space-mono)] text-xs tracking-[0.2em] transition-all duration-300 h-full"
+              className="px-10 py-4 bg-[#D4AF37] hover:bg-[#F2D06B] text-black rounded-full font-medium tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.3)]"
             >
-              [ INITIATE ]
+              Analyze Asset
             </button>
           </form>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {/* Token Ledger Module */}
-          <div className="gsap-stagger p-8 border-l border-[#00F0FF]/50 bg-black/40 flex flex-col gap-8 group hover:bg-[#00F0FF]/5 transition-colors duration-500 backdrop-blur-md">
-            <h2 className="text-[#00F0FF] font-medium text-sm flex items-center gap-3 font-[family-name:var(--font-space-mono)] uppercase tracking-[0.2em]">
-              <span className="w-1.5 h-1.5 bg-[#00F0FF] shadow-[0_0_8px_#00F0FF]"></span>
-              [ Token Ledger ]
+          <div className="gsap-stagger p-10 border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent rounded-2xl flex flex-col gap-8 group hover:border-[#D4AF37]/30 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(212,175,55,0.05)]">
+            <h2 className="text-[#D4AF37] font-[family-name:var(--font-playfair)] text-xl italic tracking-wide">
+              Token Ledger
             </h2>
             <div className="flex justify-between items-end">
               <div>
-                <p className="text-zinc-600 text-[10px] font-[family-name:var(--font-space-mono)] uppercase tracking-widest mb-2">Available Credits</p>
-                <p className="text-5xl font-[family-name:var(--font-space-mono)] text-white group-hover:text-[#00F0FF] transition-colors duration-500 font-light">---</p>
+                <p className="text-white/40 text-[11px] uppercase tracking-widest mb-3">Available Capital</p>
+                <p className="text-5xl font-light text-[#F5F5F5] group-hover:text-[#D4AF37] transition-colors duration-500">---</p>
               </div>
-              <button className="px-6 py-2.5 bg-transparent hover:bg-[#00F0FF] border border-[#00F0FF]/30 text-[#00F0FF] hover:text-black font-[family-name:var(--font-space-mono)] text-[10px] tracking-widest uppercase transition-all duration-300">
+              <button className="px-6 py-2 bg-transparent hover:bg-white/5 border border-white/20 text-[#E5E4E2] rounded-full text-[11px] tracking-widest uppercase transition-all duration-300 hover:border-[#D4AF37] hover:text-[#D4AF37]">
                 Manage
               </button>
             </div>
           </div>
 
           {/* Active Properties Module */}
-          <div className="gsap-stagger p-8 border-l border-[#4A00E0]/50 bg-black/40 flex flex-col gap-8 group hover:bg-[#4A00E0]/10 transition-colors duration-500 backdrop-blur-md">
-            <h2 className="text-[#4A00E0] font-medium text-sm flex items-center gap-3 font-[family-name:var(--font-space-mono)] uppercase tracking-[0.2em]">
-              <span className="w-1.5 h-1.5 bg-[#4A00E0] shadow-[0_0_8px_#4A00E0]"></span>
-              [ Active Targets ]
+          <div className="gsap-stagger p-10 border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent rounded-2xl flex flex-col gap-8 group hover:border-[#D4AF37]/30 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(212,175,55,0.05)]">
+            <h2 className="text-[#D4AF37] font-[family-name:var(--font-playfair)] text-xl italic tracking-wide">
+              Asset Portfolio
             </h2>
             <div className="flex justify-between items-end">
               <div>
-                <p className="text-zinc-600 text-[10px] font-[family-name:var(--font-space-mono)] uppercase tracking-widest mb-2">Saved Properties</p>
-                <p className="text-5xl font-[family-name:var(--font-space-mono)] text-white group-hover:text-[#4A00E0] transition-colors duration-500 font-light">{activeTargetsCount}</p>
+                <p className="text-white/40 text-[11px] uppercase tracking-widest mb-3">Monitored Deals</p>
+                <p className="text-5xl font-light text-[#F5F5F5] group-hover:text-[#D4AF37] transition-colors duration-500">{activeTargetsCount}</p>
               </div>
-              <button className="px-6 py-2.5 bg-transparent hover:bg-[#4A00E0] border border-[#4A00E0]/30 text-[#4A00E0] hover:text-white font-[family-name:var(--font-space-mono)] text-[10px] tracking-widest uppercase transition-all duration-300">
-                Ledger
+              <button className="px-6 py-2 bg-transparent hover:bg-white/5 border border-white/20 text-[#E5E4E2] rounded-full text-[11px] tracking-widest uppercase transition-all duration-300 hover:border-[#D4AF37] hover:text-[#D4AF37]">
+                View Ledger
               </button>
             </div>
           </div>
         </div>
 
-        <div className="gsap-stagger flex flex-col mb-10 w-full">
-          <h3 className="text-[#00F0FF] text-xs font-[family-name:var(--font-space-mono)] uppercase tracking-[0.3em] mb-6 border-b border-[#00F0FF]/20 pb-4">
-            Available Command Modules
+        <div className="gsap-stagger flex flex-col mb-16 w-full">
+          <h3 className="text-[#D4AF37]/80 text-sm tracking-[0.2em] uppercase mb-8 border-b border-white/10 pb-4 text-center">
+            Institutional Command Modules
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#00F0FF]/50 transition-colors group cursor-pointer">
-              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#00F0FF] transition-colors">1. Predictive Deal Engine</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed">
-                Chat interface with Gemini to calculate proprietary Acquisition Viability Scores based on simulated distress signals (probate, tax delinquency).
+            <div className="p-8 bg-black/20 border border-white/5 rounded-xl hover:border-[#D4AF37]/40 transition-colors group cursor-pointer">
+              <h4 className="text-[#F5F5F5] font-[family-name:var(--font-playfair)] text-lg mb-3 group-hover:text-[#D4AF37] transition-colors">Predictive Deal Engine</h4>
+              <p className="text-white/50 text-sm font-light leading-relaxed">
+                Interact with the intelligence core to evaluate proprietary Acquisition Viability Scores and parse off-market distress signals.
               </p>
             </div>
 
-            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#00F0FF]/50 transition-colors group cursor-pointer">
-              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#00F0FF] transition-colors">2. Deep Financial Analysis</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed">
-                Automatically calculate Estimated Repairs, After Repair Value (ARV), and Max Allowable Offers strictly adhering to the 70% rule.
+            <div className="p-8 bg-black/20 border border-white/5 rounded-xl hover:border-[#D4AF37]/40 transition-colors group cursor-pointer">
+              <h4 className="text-[#F5F5F5] font-[family-name:var(--font-playfair)] text-lg mb-3 group-hover:text-[#D4AF37] transition-colors">Financial Underwriting</h4>
+              <p className="text-white/50 text-sm font-light leading-relaxed">
+                Autonomously calculate Estimated Repairs, After Repair Value (ARV), and Max Allowable Offers (MAO) with strict institutional rigor.
               </p>
             </div>
 
-            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#4A00E0]/50 transition-colors group cursor-pointer">
-              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#4A00E0] transition-colors">3. Outbound Omnichannel Agent</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed">
-                Dispatch AI-generated cold text scripts via Twilio, or deploy synthesized real-time voice calls via ElevenLabs to motivated sellers.
+            <div className="p-8 bg-black/20 border border-white/5 rounded-xl hover:border-[#D4AF37]/40 transition-colors group cursor-pointer">
+              <h4 className="text-[#F5F5F5] font-[family-name:var(--font-playfair)] text-lg mb-3 group-hover:text-[#D4AF37] transition-colors">Omnichannel Agent</h4>
+              <p className="text-white/50 text-sm font-light leading-relaxed">
+                Dispatch hyper-personalized cold outreach via synthesized real-time voice calls or SMS, driven by behavioral analysis.
               </p>
             </div>
 
-            <div className="p-6 bg-zinc-900/40 border border-zinc-800/50 hover:border-[#4A00E0]/50 transition-colors group cursor-pointer">
-              <h4 className="text-white font-medium text-sm mb-2 group-hover:text-[#4A00E0] transition-colors">4. Inbound Negotiation Mode</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed">
-                Catch inbound SMS replies via Twilio webhooks and let the Gemini engine autonomously negotiate and respond within the property's context.
+            <div className="p-8 bg-black/20 border border-white/5 rounded-xl hover:border-[#D4AF37]/40 transition-colors group cursor-pointer">
+              <h4 className="text-[#F5F5F5] font-[family-name:var(--font-playfair)] text-lg mb-3 group-hover:text-[#D4AF37] transition-colors">Autonomous Negotiation</h4>
+              <p className="text-white/50 text-sm font-light leading-relaxed">
+                Intercept inbound prospect replies and let the intelligence engine autonomously negotiate terms based on deal parameters.
               </p>
             </div>
 
           </div>
         </div>
 
-        <div className="gsap-stagger w-full flex justify-center mt-4">
+        <div className="gsap-stagger w-full flex justify-center mt-8">
           <button 
             onClick={() => { setInitialPrompt(""); setIsTerminalOpen(true); }}
-            className="px-14 py-5 bg-white hover:bg-[#00F0FF] text-black font-[family-name:var(--font-space-mono)] text-xs tracking-[0.3em] font-bold transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,240,255,0.4)] w-full md:w-auto"
+            className="px-12 py-4 bg-transparent border border-[#D4AF37]/50 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black rounded-full font-medium tracking-[0.1em] transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.1)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]"
           >
-            OPEN DEAL ENGINE TERMINAL
+            Access Intelligence Core
           </button>
         </div>
       </main>
