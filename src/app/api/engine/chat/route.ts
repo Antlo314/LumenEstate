@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-pro-latest",
       systemInstruction: SYSTEM_PROMPT,
-      tools: [{ googleSearch: {} }]
+      tools: [{ googleSearch: {} } as any]
     });
 
     // Format history for Gemini SDK
